@@ -7,6 +7,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 import numpy as np
 from gymnasium import spaces
+import sys
 
 from config import (
     ALPHA,
@@ -295,7 +296,11 @@ else:
     env = MazeEnv()
 
     # Load the trained agent
-    model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
+    # Get model path from command line argument or use default
+    if len(sys.argv) > 1:
+        model_path = sys.argv[1]
+    else:
+        model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
     agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
 
     try:

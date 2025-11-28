@@ -31,7 +31,7 @@ class Config:
     DECAY_STEP = 100
 
     # Train or Test Model/Agent
-    TRAIN = True
+    TRAIN = False
     RENDERS = False
 
 

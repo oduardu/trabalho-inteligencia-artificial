@@ -1,0 +1,24 @@
+==================================================
+TABELA 2: RESULTADOS (MÉDIA E SUCESSO)
+==================================================
+     Identificador  Recompensa Média  Taxa de Sucesso (%)
+ q_learning_model1            22.932                 34.1
+q_learning_model10            71.670                 40.7
+q_learning_model11            16.138                 37.5
+q_learning_model12            14.018                 34.4
+q_learning_model13           -77.540                 23.7
+q_learning_model14             5.771                 30.4
+q_learning_model15          -150.103                 19.7
+q_learning_model16            83.081                 41.5
+q_learning_model17            59.729                 38.5
+q_learning_model18            13.459                 32.9
+q_learning_model19             8.339                 31.0
+ q_learning_model2          -112.806                 25.4
+q_learning_model20          -444.259                  7.4
+ q_learning_model3          -245.813                 26.5
+ q_learning_model4             9.864                 32.3
+ q_learning_model5            84.536                 42.7
+ q_learning_model6          -122.344                 18.2
+ q_learning_model7           -28.228                 25.8
+ q_learning_model8             6.351                 30.7
+ q_learning_model9           -19.981                 26.7
