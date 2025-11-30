@@ -267,142 +267,142 @@ class QLearningAgent:
         self.q_table[state][action] = new_value
 
 
+# # # ---------------------------------------------------------------------------------------------------
+# # # BLOCO DE TREINO Q-LEARNING (COMENTADO)
+# # # ---------------------------------------------------------------------------------------------------
+
+# if TRAIN() and MODEL() in ["q-learning", "both"]:
+#     env = MazeEnv()
+#     # O Q-Learning usaria ALPHA e EPSILON do config.py
+#     agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), EPSILON())
+
+#     episodes = SIMMULATION_NUMBER()
+#     total_reward = 0
+#     sucess = 0
+#     for episode in range(1, episodes + 1):
+#         state, _ = env.reset(isnumpy=False)
+#         done = False
+#         if RENDERS():
+#             env.render()
+
+#         while not done:
+#             action = agent.get_action(state)
+#             next_state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
+#             done = terminated or truncated # Atualizado para a lógica Gymnasium
+
+#             agent.update(state, action, reward, next_state)
+#             state = next_state
+#             total_reward += reward
+#             if reward == GOAL_REWARD():
+#                 sucess += 1
+#             if RENDERS():
+#                 env.render()
+
+#         # Parameter Decay
+#         if episode % DECAY_STEP() == 0:
+#             agent.epsilon *= EPSILON_DECAY()
+#             agent.alpha *= ALPHA_DECAY()
+#             print(
+#                 f"Episode {episode}, Mean Reward: {(total_reward / DECAY_STEP()):.2f}, Success Rate: {(sucess / DECAY_STEP()):.2f}"
+#             )
+#             print("Explore Chance (epsilon): ", agent.epsilon)
+#             print("Exploit Chance (1-epsilon): ", 1 - agent.epsilon)
+#             print("Learning Rate (alpha): ", agent.alpha)
+#             total_reward = 0
+#             sucess = 0
+
+#     # Save the trained agent
+#     model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
+#     agent.save_model(model_path)
+#     print(f"Modelo salvo em: {model_path}")
+
 # # ---------------------------------------------------------------------------------------------------
-# # BLOCO DE TREINO Q-LEARNING (COMENTADO)
+# # BLOCO DE TESTE Q-LEARNING (COMENTADO)
 # # ---------------------------------------------------------------------------------------------------
 
-if TRAIN() and MODEL() in ["q-learning", "both"]:
-    env = MazeEnv()
-    # O Q-Learning usaria ALPHA e EPSILON do config.py
-    agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), EPSILON())
+# if TEST() and MODEL() in ["q-learning", "both"]: # Condição ajustada
+#     env = MazeEnv()
 
-    episodes = SIMMULATION_NUMBER()
-    total_reward = 0
-    sucess = 0
-    for episode in range(1, episodes + 1):
-        state, _ = env.reset(isnumpy=False)
-        done = False
-        if RENDERS():
-            env.render()
+#     # Load the trained agent
+#     if len(sys.argv) > 1:
+#         model_path = sys.argv[1]
+#     else:
+#         model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
+#     agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
 
-        while not done:
-            action = agent.get_action(state)
-            next_state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
-            done = terminated or truncated # Atualizado para a lógica Gymnasium
+#     try:
+#         agent.load_model(model_path)
+#     except FileNotFoundError as e:
+#         print(e)
+#         exit()
 
-            agent.update(state, action, reward, next_state)
-            state = next_state
-            total_reward += reward
-            if reward == GOAL_REWARD():
-                sucess += 1
-            if RENDERS():
-                env.render()
+#     # --- Lógica para Testar com 1000 Simulações (Requisito 2) ---
+#     NUM_TEST_EPISODES = 1000
+#     test_rewards = []
+#     test_successes = 0
 
-        # Parameter Decay
-        if episode % DECAY_STEP() == 0:
-            agent.epsilon *= EPSILON_DECAY()
-            agent.alpha *= ALPHA_DECAY()
-            print(
-                f"Episode {episode}, Mean Reward: {(total_reward / DECAY_STEP()):.2f}, Success Rate: {(sucess / DECAY_STEP()):.2f}"
-            )
-            print("Explore Chance (epsilon): ", agent.epsilon)
-            print("Exploit Chance (1-epsilon): ", 1 - agent.epsilon)
-            print("Learning Rate (alpha): ", agent.alpha)
-            total_reward = 0
-            sucess = 0
+#     should_render = RENDERS()
 
-    # Save the trained agent
-    model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
-    agent.save_model(model_path)
-    print(f"Modelo salvo em: {model_path}")
+#     if should_render:
+#         print("Atenção: Rodando 1000 testes sem renderização para velocidade. Uma simulação será renderizada ao final.")
 
-# ---------------------------------------------------------------------------------------------------
-# BLOCO DE TESTE Q-LEARNING (COMENTADO)
-# ---------------------------------------------------------------------------------------------------
+#     print(f"Iniciando teste de {NUM_TEST_EPISODES} episódios. Pode levar um momento...")
 
-if TEST() and MODEL() in ["q-learning", "both"]: # Condição ajustada
-    env = MazeEnv()
+#     for test_episode in range(NUM_TEST_EPISODES):
+#         state, _ = env.reset(isnumpy=False)
+#         done = False
+#         episode_reward = 0
 
-    # Load the trained agent
-    if len(sys.argv) > 1:
-        model_path = sys.argv[1]
-    else:
-        model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
-    agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
+#         while not done:
+#             action = agent.get_action(state)
+#             state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
+#             done = terminated or truncated
+#             episode_reward += reward
 
-    try:
-        agent.load_model(model_path)
-    except FileNotFoundError as e:
-        print(e)
-        exit()
+#         test_rewards.append(episode_reward)
+#         if reward == GOAL_REWARD():
+#             test_successes += 1
 
-    # --- Lógica para Testar com 1000 Simulações (Requisito 2) ---
-    NUM_TEST_EPISODES = 1000
-    test_rewards = []
-    test_successes = 0
+#         if (test_episode + 1) % 100 == 0:
+#             print(f"Testando episódio {test_episode + 1}/{NUM_TEST_EPISODES}")
 
-    should_render = RENDERS()
+#     mean_reward = np.mean(test_rewards)
+#     success_rate_decimal = test_successes / NUM_TEST_EPISODES
 
-    if should_render:
-        print("Atenção: Rodando 1000 testes sem renderização para velocidade. Uma simulação será renderizada ao final.")
+#     print("\n" + "=" * 40)
+#     print("--- Resultados do Teste (1000 Simulações) ---")
+#     print(f"Recompensa Média: {mean_reward:.2f}")
+#     print(f"Taxa de Sucesso: {success_rate_decimal:.2f} (ou {success_rate_decimal * 100:.2f}%)")
+#     print("=" * 40 + "\n")
 
-    print(f"Iniciando teste de {NUM_TEST_EPISODES} episódios. Pode levar um momento...")
-
-    for test_episode in range(NUM_TEST_EPISODES):
-        state, _ = env.reset(isnumpy=False)
-        done = False
-        episode_reward = 0
-
-        while not done:
-            action = agent.get_action(state)
-            state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
-            done = terminated or truncated
-            episode_reward += reward
-
-        test_rewards.append(episode_reward)
-        if reward == GOAL_REWARD():
-            test_successes += 1
-
-        if (test_episode + 1) % 100 == 0:
-            print(f"Testando episódio {test_episode + 1}/{NUM_TEST_EPISODES}")
-
-    mean_reward = np.mean(test_rewards)
-    success_rate_decimal = test_successes / NUM_TEST_EPISODES
-
-    print("\n" + "=" * 40)
-    print("--- Resultados do Teste (1000 Simulações) ---")
-    print(f"Recompensa Média: {mean_reward:.2f}")
-    print(f"Taxa de Sucesso: {success_rate_decimal:.2f} (ou {success_rate_decimal * 100:.2f}%)")
-    print("=" * 40 + "\n")
-
-if RENDERS() and MODEL() in ["q-learning", "both"]:
-    env = MazeEnv()
+# if RENDERS() and MODEL() in ["q-learning", "both"]:
+#     env = MazeEnv()
     
-    # Load the trained agent
-    if len(sys.argv) > 1:
-        model_path = sys.argv[1]
-    else:
-        model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
+#     # Load the trained agent
+#     if len(sys.argv) > 1:
+#         model_path = sys.argv[1]
+#     else:
+#         model_path = os.path.join(os.path.dirname(__file__), "q_learning_model.pkl")
     
-    agent_visual = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
+#     agent_visual = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
     
-    try:
-        agent_visual.load_model(model_path)
-    except FileNotFoundError as e:
-        print(e)
-        print("Não é possível renderizar sem modelo treinado.")
-    else:
-        print("\nRodando uma simulação visual do modelo treinado...")
-        state, _ = env.reset(isnumpy=False)
-        done = False
-        env.render()
+#     try:
+#         agent_visual.load_model(model_path)
+#     except FileNotFoundError as e:
+#         print(e)
+#         print("Não é possível renderizar sem modelo treinado.")
+#     else:
+#         print("\nRodando uma simulação visual do modelo treinado...")
+#         state, _ = env.reset(isnumpy=False)
+#         done = False
+#         env.render()
 
-        while not done:
-            action = agent_visual.get_action(state)
-            state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
-            done = terminated or truncated
-            print(f"Action: {action}, Reward: {reward}")
-            env.render()
+#         while not done:
+#             action = agent_visual.get_action(state)
+#             state, reward, terminated, truncated, _ = env.step(action, isnumpy=False)
+#             done = terminated or truncated
+#             print(f"Action: {action}, Reward: {reward}")
+#             env.render()
 
 
 
@@ -411,176 +411,176 @@ if RENDERS() and MODEL() in ["q-learning", "both"]:
 # -------------------------------------------------------------------------------------------------------
 
 # Configurações do Stable Baselines3 (SB3)
-# NUM_ENVS = 4  # Número de ambientes paralelos (VecEnv) para acelerar o A2C
-# POLICY = "MlpPolicy"  # Política padrão para espaços vetoriais como o MultiDiscrete
-# MODEL_DIR_PATH = os.path.join(os.path.dirname(__file__), "modelos", "a2c")
+NUM_ENVS = 4  # Número de ambientes paralelos (VecEnv) para acelerar o A2C
+POLICY = "MlpPolicy"  # Política padrão para espaços vetoriais como o MultiDiscrete
+MODEL_DIR_PATH = os.path.join(os.path.dirname(__file__), "modelos", "a2c")
 
-# existing_models = []
-# if os.path.exists(MODEL_DIR_PATH):
-#     for filename in os.listdir(MODEL_DIR_PATH):
-#         if filename.startswith("a2c_model_") and filename.endswith(".zip"):
-#             try:
-#                 model_num = int(filename.replace("a2c_model_", "").replace(".zip", ""))
-#                 existing_models.append(model_num)
-#             except ValueError:
-#                 continue
+existing_models = []
+if os.path.exists(MODEL_DIR_PATH):
+    for filename in os.listdir(MODEL_DIR_PATH):
+        if filename.startswith("a2c_model_") and filename.endswith(".zip"):
+            try:
+                model_num = int(filename.replace("a2c_model_", "").replace(".zip", ""))
+                existing_models.append(model_num)
+            except ValueError:
+                continue
 
-# if len(sys.argv) > 1:
-#     try:
-#         MODEL_ID = int(sys.argv[1])
-#         print(f"Usando MODEL_ID fornecido: {MODEL_ID}")
-#     except ValueError:
-#         print("ERRO: O argumento deve ser um número inteiro para o MODEL_ID.")
-#         sys.exit(1)
-# else:
-#     MODEL_ID = max(existing_models) + 1 if existing_models else 1
-#     print(f"Nenhum MODEL_ID fornecido. Usando próximo ID disponível: {MODEL_ID}")
-
-
-# # Funções auxiliares para salvar e carregar modelos A2C
-# def save_a2c_model(model, identifier):
-#     # Caminho ajustado para 'modelos/a2c'
-#     model_dir = os.path.join(os.path.dirname(__file__), "modelos", "a2c")
-#     os.makedirs(model_dir, exist_ok=True)
-#     model_path = os.path.join(model_dir, f"a2c_model_{identifier}.zip")
-#     model.save(model_path)
-#     return model_path
+if len(sys.argv) > 1:
+    try:
+        MODEL_ID = int(sys.argv[1])
+        print(f"Usando MODEL_ID fornecido: {MODEL_ID}")
+    except ValueError:
+        print("ERRO: O argumento deve ser um número inteiro para o MODEL_ID.")
+        sys.exit(1)
+else:
+    MODEL_ID = max(existing_models) + 1 if existing_models else 1
+    print(f"Nenhum MODEL_ID fornecido. Usando próximo ID disponível: {MODEL_ID}")
 
 
-# def load_a2c_model(model_path, env):
-#     return A2C.load(model_path, env=env, verbose=0)
+# Funções auxiliares para salvar e carregar modelos A2C
+def save_a2c_model(model, identifier):
+    # Caminho ajustado para 'modelos/a2c'
+    model_dir = os.path.join(os.path.dirname(__file__), "modelos", "a2c")
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, f"a2c_model_{identifier}.zip")
+    model.save(model_path)
+    return model_path
 
 
-# if TRAIN() and MODEL() in ["a2c", "both"]:
-#     # Bloco de TREINO A2C
+def load_a2c_model(model_path, env):
+    return A2C.load(model_path, env=env, verbose=0)
 
-#     lr = LR()
-#     n_steps = N_STEPS()
-#     gamma = GAMMA()
-#     ent_coef = ENT_COEF()
 
-#     print("-" * 40)
-#     print(f"Treinando Modelo A2C ID: {MODEL_ID} (Usando Config.py)")
-#     print(f"LR: {lr}, n_steps: {n_steps}, Gamma: {gamma}, Ent_coef: {ent_coef}")
+if TRAIN() and MODEL() in ["a2c", "both"]:
+    # Bloco de TREINO A2C
 
-#     env_train = make_vec_env(lambda: MazeEnv(), n_envs=NUM_ENVS, seed=0)
+    lr = LR()
+    n_steps = N_STEPS()
+    gamma = GAMMA()
+    ent_coef = ENT_COEF()
 
-#     model = A2C(
-#         POLICY,
-#         env_train,
-#         learning_rate=lr,
-#         n_steps=n_steps,
-#         gamma=gamma,
-#         ent_coef=ent_coef,
-#         verbose=0,
-#     )
+    print("-" * 40)
+    print(f"Treinando Modelo A2C ID: {MODEL_ID} (Usando Config.py)")
+    print(f"LR: {lr}, n_steps: {n_steps}, Gamma: {gamma}, Ent_coef: {ent_coef}")
 
-#     model.learn(total_timesteps=SIMMULATION_NUMBER())
+    env_train = make_vec_env(lambda: MazeEnv(), n_envs=NUM_ENVS, seed=0)
 
-#     save_a2c_model(model, MODEL_ID)
+    model = A2C(
+        POLICY,
+        env_train,
+        learning_rate=lr,
+        n_steps=n_steps,
+        gamma=gamma,
+        ent_coef=ent_coef,
+        verbose=0,
+    )
 
-#     print("\nTreinamento A2C concluído. Modelo salvo.")
+    model.learn(total_timesteps=SIMMULATION_NUMBER())
 
-# if TEST() and MODEL() in ["a2c", "both"]:
-#     # Bloco de TESTE A2C (APENAS MODELO 1)
+    save_a2c_model(model, MODEL_ID)
 
-#     NUM_TEST_EPISODES = 1000
+    print("\nTreinamento A2C concluído. Modelo salvo.")
 
-#     env_test = MazeEnv()
-#     model_name = f"a2c_model_{MODEL_ID}.zip"
-#     model_path = os.path.join(MODEL_DIR_PATH, model_name)
+if TEST() and MODEL() in ["a2c", "both"]:
+    # Bloco de TESTE A2C (APENAS MODELO 1)
 
-#     print("\n" + "=" * 60)
-#     print(f"Iniciando Teste do Único Modelo A2C (ID: {MODEL_ID}, 1000 Simulações)...")
-#     try:
-#         model_to_test = load_a2c_model(model_path, env_test)
-#     except Exception as e:
-#         print(
-#             f"ERRO: Modelo {model_name} não encontrado. Verifique se ele está em '{MODEL_DIR_PATH}'. Detalhes: {e}"
-#         )
-#         sys.exit(1)
+    NUM_TEST_EPISODES = 1000
 
-#     print("-" * 40)
-#     print(f"Testando Modelo ID: {MODEL_ID} ({model_name})")
+    env_test = MazeEnv()
+    model_name = f"a2c_model_{MODEL_ID}.zip"
+    model_path = os.path.join(MODEL_DIR_PATH, model_name)
 
-#     test_successes = 0
-#     test_rewards_list = []
+    print("\n" + "=" * 60)
+    print(f"Iniciando Teste do Único Modelo A2C (ID: {MODEL_ID}, 1000 Simulações)...")
+    try:
+        model_to_test = load_a2c_model(model_path, env_test)
+    except Exception as e:
+        print(
+            f"ERRO: Modelo {model_name} não encontrado. Verifique se ele está em '{MODEL_DIR_PATH}'. Detalhes: {e}"
+        )
+        sys.exit(1)
 
-#     for _ in range(NUM_TEST_EPISODES):
-#         state, _ = env_test.reset()
-#         done = False
-#         episode_reward = 0
+    print("-" * 40)
+    print(f"Testando Modelo ID: {MODEL_ID} ({model_name})")
 
-#         while not done:
-#             action, _ = model_to_test.predict(state, deterministic=True)
+    test_successes = 0
+    test_rewards_list = []
 
-#             # CORREÇÃO DO ERRO INDEXERROR
-#             if isinstance(action, np.ndarray):
-#                 action_value = action.item()
-#             else:
-#                 action_value = action
+    for _ in range(NUM_TEST_EPISODES):
+        state, _ = env_test.reset()
+        done = False
+        episode_reward = 0
 
-#             state, reward, terminated, truncated, _ = env_test.step(action_value)
-#             done = terminated or truncated
-#             episode_reward += reward
+        while not done:
+            action, _ = model_to_test.predict(state, deterministic=True)
 
-#         test_rewards_list.append(episode_reward)
-#         if reward == GOAL_REWARD():
-#             test_successes += 1
+            # CORREÇÃO DO ERRO INDEXERROR
+            if isinstance(action, np.ndarray):
+                action_value = action.item()
+            else:
+                action_value = action
 
-#     # Calcular as métricas
-#     mean_reward_final = np.mean(test_rewards_list)
-#     success_rate_decimal = test_successes / NUM_TEST_EPISODES
+            state, reward, terminated, truncated, _ = env_test.step(action_value)
+            done = terminated or truncated
+            episode_reward += reward
 
-#     print(f"Recompensa Média: {mean_reward_final:.2f}")
-#     print(
-#         f"Taxa de Sucesso: {success_rate_decimal:.3f} (ou {success_rate_decimal * 100:.3f}%)"
-#     )
+        test_rewards_list.append(episode_reward)
+        if reward == GOAL_REWARD():
+            test_successes += 1
 
-#     print("=" * 60 + "\n")
+    # Calcular as métricas
+    mean_reward_final = np.mean(test_rewards_list)
+    success_rate_decimal = test_successes / NUM_TEST_EPISODES
 
-#     # ----------------------------------------------------
-#     # GERAÇÃO DA TABELA FINAL (Apenas Modelo 1)
-#     # ----------------------------------------------------
+    print(f"Recompensa Média: {mean_reward_final:.2f}")
+    print(
+        f"Taxa de Sucesso: {success_rate_decimal:.3f} (ou {success_rate_decimal * 100:.3f}%)"
+    )
 
-#     print(f"## 📊 Resultados do Teste (Modelo {MODEL_ID} - 1000 Simulações)")
-#     print("| ID | Recompensa Média | Taxa de Sucesso |")
-#     print("|:---:|:---:|:---:|")
-#     print(
-#         f"| {MODEL_ID} | {mean_reward_final:.2f} | {success_rate_decimal * 100:.3f}% |"
-#     )
+    print("=" * 60 + "\n")
 
-# # --- SIMULAÇÃO VISUAL (Se RENDERS = True) ---
-# if RENDERS() and MODEL() in ["a2c", "both"]:
-#     env_test = MazeEnv()
+    # ----------------------------------------------------
+    # GERAÇÃO DA TABELA FINAL (Apenas Modelo 1)
+    # ----------------------------------------------------
+
+    print(f"## 📊 Resultados do Teste (Modelo {MODEL_ID} - 1000 Simulações)")
+    print("| ID | Recompensa Média | Taxa de Sucesso |")
+    print("|:---:|:---:|:---:|")
+    print(
+        f"| {MODEL_ID} | {mean_reward_final:.2f} | {success_rate_decimal * 100:.3f}% |"
+    )
+
+# --- SIMULAÇÃO VISUAL (Se RENDERS = True) ---
+if RENDERS() and MODEL() in ["a2c", "both"]:
+    env_test = MazeEnv()
     
-#     model_name = f"a2c_model_{MODEL_ID}.zip"
-#     model_path = os.path.join(MODEL_DIR_PATH, model_name)
+    model_name = f"a2c_model_{MODEL_ID}.zip"
+    model_path = os.path.join(MODEL_DIR_PATH, model_name)
 
-#     print(f"\nRodando simulação visual do modelo A2C (ID: {MODEL_ID})..., '{MODEL_DIR_PATH}'")
+    print(f"\nRodando simulação visual do modelo A2C (ID: {MODEL_ID})..., '{MODEL_DIR_PATH}'")
 
-#     try:
-#         model_to_test = load_a2c_model(model_path, env_test)
-#     except Exception as e:
-#         print(
-#             f"ERRO: Modelo {model_name} não encontrado. Verifique se ele está em '{MODEL_DIR_PATH}'. Detalhes: {e}"
-#         )
-#         sys.exit(1)
+    try:
+        model_to_test = load_a2c_model(model_path, env_test)
+    except Exception as e:
+        print(
+            f"ERRO: Modelo {model_name} não encontrado. Verifique se ele está em '{MODEL_DIR_PATH}'. Detalhes: {e}"
+        )
+        sys.exit(1)
 
-#     state, _ = env_test.reset()
-#     done = False
-#     env_test.render()
+    state, _ = env_test.reset()
+    done = False
+    env_test.render()
 
-#     while not done:
-#         action, _ = model_to_test.predict(state, deterministic=True)
+    while not done:
+        action, _ = model_to_test.predict(state, deterministic=True)
 
-#         if isinstance(action, np.ndarray):
-#             action_value = action.item()
-#         else:
-#             action_value = action
+        if isinstance(action, np.ndarray):
+            action_value = action.item()
+        else:
+            action_value = action
 
-#         state, reward, terminated, truncated, _ = env_test.step(action_value)
-#         done = terminated or truncated
-#         print(f"Action: {action_value}, Reward: {reward}")
-#         env_test.render()
+        state, reward, terminated, truncated, _ = env_test.step(action_value)
+        done = terminated or truncated
+        print(f"Action: {action_value}, Reward: {reward}")
+        env_test.render()
 

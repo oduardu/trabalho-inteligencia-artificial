@@ -7,35 +7,26 @@ class Config:
     # GOAL_REWARD = 100
 
     # Q-Learning configs
-    # ALPHA = 0.5
-    # GAMMA = 0.9
+    # ALPHA = 0.9
+    # GAMMA = 0.99
     # EPSILON = 1.0
-    # SIMMULATION_NUMBER = 250000 # FIXO
-    # ALPHA_DECAY = 0.999
-    # EPSILON_DECAY = 0.999
-    # DECAY_STEP = 500
+    # ALPHA_DECAY = 0.99
+    # EPSILON_DECAY = 0.99
+    # DECAY_STEP = 100
 
     # Reward configs
-    STEP_REWARD = -1
+    STEP_REWARD = -2
     WALL_REWARD = -5
     HOLE_REWARD = -100
-    GOAL_REWARD = 500
+    GOAL_REWARD = 100
 
     # A2C configs
-    # GAMMA = 0.9
-    # N_STEPS = 20
-    # ENT_COEF = 0.01
-    # LR = 0.0005
+    GAMMA = 0.995
+    N_STEPS = 10
+    ENT_COEF = 0.05
+    LR = 0.0007
 
     SIMMULATION_NUMBER = 250000  # FIXO
-
-    # Q-Learning configs
-    ALPHA = 0.9
-    GAMMA = 0.99
-    EPSILON = 1.0
-    ALPHA_DECAY = 0.99
-    EPSILON_DECAY = 0.99
-    DECAY_STEP = 100
 
     # Train or Test Model/Agent 
     TRAIN = True
@@ -43,7 +34,7 @@ class Config:
     RENDERS = False
     # RENDERS = True
     TEST = True
-    MODEL = "q-learning"  # "q-learning" or "a2c" or "both"
+    MODEL = "a2c"
 
 
 def STEP_REWARD() -> int:
