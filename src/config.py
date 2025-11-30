@@ -16,30 +16,34 @@ class Config:
     # DECAY_STEP = 500
 
     # Reward configs
-    STEP_REWARD = -0.1
-    WALL_REWARD = -50
+    STEP_REWARD = -1
+    WALL_REWARD = -3
     HOLE_REWARD = -100
     GOAL_REWARD = 100
 
+    # A2C configs
+    # GAMMA = 0.9
+    # N_STEPS = 20
+    # ENT_COEF = 0.01
+    # LR = 0.0005
+
     SIMMULATION_NUMBER = 250000  # FIXO
 
-    # A2C configs
-    GAMMA = 0.99
-    N_STEPS = 5
-    ENT_COEF = 0.01
-    LR = 0.0007
-
     # Q-Learning configs
-    # ALPHA = 0.9
-    # GAMMA = 0.99
-    # EPSILON = 1.0
-    # ALPHA_DECAY = 0.99
-    # EPSILON_DECAY = 0.99
-    # DECAY_STEP = 100
+    ALPHA = 0.85
+    GAMMA = 0.85
+    EPSILON = 1.0
+    ALPHA_DECAY = 0.99
+    EPSILON_DECAY = 0.99
+    DECAY_STEP = 3000
 
-    # Train or Test Model/Agent
-    TRAIN = False
-    RENDERS = True
+    # Train or Test Model/Agent 
+    TRAIN = True
+    # TRAIN = False
+    RENDERS = False
+    # RENDERS = True
+    TEST = True
+    MODEL = "q-learning"  # "q-learning" or "a2c" or "both"
 
 
 def STEP_REWARD() -> int:
@@ -76,32 +80,32 @@ def LR() -> float:
 
 
 # Q-Learning
-# def ALPHA() -> float:
-#     return Config.ALPHA
+def ALPHA() -> float:
+    return Config.ALPHA
 
 
-# def GAMMA() -> float:
-#     return Config.GAMMA
+def GAMMA() -> float:
+    return Config.GAMMA
 
 
-# def EPSILON() -> float:
-#     return Config.EPSILON
+def EPSILON() -> float:
+    return Config.EPSILON
 
 
 def SIMMULATION_NUMBER() -> int:
     return Config.SIMMULATION_NUMBER
 
 
-# def ALPHA_DECAY() -> float:
-#     return Config.ALPHA_DECAY
+def ALPHA_DECAY() -> float:
+    return Config.ALPHA_DECAY
 
 
-# def EPSILON_DECAY() -> float:
-#     return Config.EPSILON_DECAY
+def EPSILON_DECAY() -> float:
+    return Config.EPSILON_DECAY
 
 
-# def DECAY_STEP() -> int:
-#     return Config.DECAY_STEP
+def DECAY_STEP() -> int:
+    return Config.DECAY_STEP
 
 
 def TRAIN() -> bool:
@@ -110,3 +114,9 @@ def TRAIN() -> bool:
 
 def RENDERS() -> bool:
     return Config.RENDERS
+
+def TEST() -> bool:
+    return Config.TEST
+
+def MODEL() -> str:
+    return Config.MODEL
