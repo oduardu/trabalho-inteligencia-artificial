@@ -17,9 +17,9 @@ class Config:
 
     # Reward configs
     STEP_REWARD = -1
-    WALL_REWARD = -3
+    WALL_REWARD = -5
     HOLE_REWARD = -100
-    GOAL_REWARD = 100
+    GOAL_REWARD = 500
 
     # A2C configs
     # GAMMA = 0.9
@@ -30,12 +30,12 @@ class Config:
     SIMMULATION_NUMBER = 250000  # FIXO
 
     # Q-Learning configs
-    ALPHA = 0.85
-    GAMMA = 0.85
+    ALPHA = 0.9
+    GAMMA = 0.99
     EPSILON = 1.0
     ALPHA_DECAY = 0.99
     EPSILON_DECAY = 0.99
-    DECAY_STEP = 3000
+    DECAY_STEP = 100
 
     # Train or Test Model/Agent 
     TRAIN = True
